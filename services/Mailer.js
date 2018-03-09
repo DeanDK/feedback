@@ -6,6 +6,7 @@ class Mailer extends helper.Mail {
   constructor({ subject, recipients }, content) {
     super();
 
+    this.sgApi = sendgrid(keys.sendGridKey);
     // who's email getting send from
     this.from_email = new helper.Email('no-reply@feedback.com');
     this.subject = subject;
@@ -41,6 +42,15 @@ class Mailer extends helper.Mail {
       personalize.addTo(recipient);
     });
     this.addPersonalization(personalize);
+  }
+
+  async send() {
+    const request = this.sgApi.emptyRequest({
+      method: 'POST',
+      path: 'v3/mail/send',
+      body: this.toJSON()
+    });
+    return this.sgApi.API(request);
   }
 }
 
