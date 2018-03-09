@@ -32,6 +32,16 @@ class Mailer extends helper.Mail {
     trackingSettings.setClickTracking(clickTracking);
     this.addTrackingSettings(trackingSettings);
   }
+
+  /* personalization is an array containing metada data about the message such as
+    subject line, recipients, headers and other custom argument */
+  addRecipients() {
+    const personalize = new helper.Personalization();
+    this.recipients.forEech(recipient => {
+      personalize.addTo(recipient);
+    });
+    this.addPersonalization(personalize);
+  }
 }
 
 module.exports = Mailer;
